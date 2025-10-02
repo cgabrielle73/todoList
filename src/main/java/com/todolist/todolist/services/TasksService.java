@@ -64,4 +64,8 @@ public class TasksService {
     public List<Tasks> takeTasks() {
         return tasksRepository.findAll();
     }
+
+    public void deleteTasks(Long id) {
+        tasksRepository.deleteById(id);
+    }
 }

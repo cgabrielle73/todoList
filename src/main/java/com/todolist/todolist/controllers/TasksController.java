@@ -34,4 +34,9 @@ public class TasksController {
     public List<Tasks> getEveryTasks() {
         return tasksService.takeTasks();
     }
+
+    @DeleteMapping("/{id}")
+    public void getEveryTasks(@PathVariable Long id) {
+        tasksService.deleteTasks(id);
+    }
 }
