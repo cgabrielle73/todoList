@@ -1,6 +1,7 @@
 package com.todolist.todolist.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.todolist.todolist.enums.StatusEnum;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -19,7 +20,8 @@ public class Tasks {
     private String description;
 
     @Column(nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private StatusEnum status = StatusEnum.PENDING;
 
     @Column
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
@@ -28,6 +30,9 @@ public class Tasks {
     @Column
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
+
+    @Column
+    private boolean completed;
 
     public Tasks() {}
 
@@ -66,11 +71,11 @@ public class Tasks {
         this.description = description;
     }
 
-    public String getStatus() {
+    public StatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusEnum status) {
         this.status = status;
     }
 
@@ -90,4 +95,11 @@ public class Tasks {
         this.updatedAt = updatedAt;
     }
 
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
 }

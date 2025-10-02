@@ -1,6 +1,7 @@
 package com.todolist.todolist.services;
 
 import com.todolist.todolist.entities.Tasks;
+import com.todolist.todolist.enums.StatusEnum;
 import com.todolist.todolist.repository.TasksRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import java.util.Optional;
 @Service
 public class TasksService {
     private TasksRepository tasksRepository;
+    private StatusEnum statusEnum;
 
     public TasksService(TasksRepository tasksRepository) {
         this.tasksRepository = tasksRepository;
@@ -17,14 +19,39 @@ public class TasksService {
 
     @Transactional
     public Tasks createTasks(Tasks tasks) {
-        if(tasks.getTitle().isEmpty() || tasks.getStatus().isEmpty()) {
+        if(tasks.getTitle().isEmpty() || tasks.getStatus() == null) {
             throw new RuntimeException("Title e Status são obrigatórios");
         }
 
         Tasks newTask = new Tasks();
         newTask.setTitle(tasks.getTitle());
-        newTask.setStatus(tasks.getStatus());
+        newTask.setStatus(StatusEnum.PENDING);
         newTask.setDescription(tasks.getDescription() != null ? tasks.getDescription() : "");
         return tasksRepository.save(newTask);
+    }
+
+    @Transactional
+    public Tasks updateStatusOfTasks(Tasks tasks) {
+        if(tasks.getTitle().isEmpty() || tasks.getStatus() == null) {
+            throw new RuntimeException("Title e Status são obrigatórios");
+        }
+
+        Optional<Tasks> idTask = tasksRepository.findById(tasks.getId());
+        if (idTask.isEmpty()) {
+            throw new RuntimeException("Tarefa não encontrada com id: " + tasks.getId());
+        }
+        if(tasks.isCompleted()) {
+            Tasks taskToUpdate = idTask.get();
+            taskToUpdate.setStatus(StatusEnum.COMPLETED);
+            taskToUpdate.setCompleted(tasks.isCompleted());
+
+            return tasksRepository.save(taskToUpdate);
+        } else {
+            Tasks taskToUpdate = idTask.get();
+            taskToUpdate.setStatus(StatusEnum.PENDING);
+            taskToUpdate.setCompleted(tasks.isCompleted());
+
+            return tasksRepository.save(taskToUpdate);
+        }
     }
 }

@@ -2,10 +2,7 @@ package com.todolist.todolist.controllers;
 
 import com.todolist.todolist.entities.Tasks;
 import com.todolist.todolist.services.TasksService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/tasks")
@@ -19,5 +16,10 @@ public class TasksController {
     @PostMapping
     public Tasks createNewTask(@RequestBody Tasks tasks) {
         return tasksService.createTasks(tasks);
+    }
+
+    @PatchMapping
+    public Tasks updateStatus(@RequestBody Tasks tasks) {
+        return tasksService.updateStatusOfTasks(tasks);
     }
 }
