@@ -60,4 +60,8 @@ public class TasksService {
         List<Long> idsList = Arrays.asList(ids);
         return tasksRepository.findAllById(idsList);
     }
+
+    public List<Tasks> takeTasks() {
+        return tasksRepository.findAll();
+    }
 }

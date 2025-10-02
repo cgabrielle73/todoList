@@ -25,8 +25,13 @@ public class TasksController {
         return tasksService.updateStatusOfTasks(tasks);
     }
 
-    @GetMapping
+    @GetMapping("/by-id")
     public List<Tasks> getTasks(@RequestParam("id") Long[] idsTasks) {
         return tasksService.getTasksByIds(idsTasks);
+    }
+
+    @GetMapping
+    public List<Tasks> getEveryTasks() {
+        return tasksService.takeTasks();
     }
 }
