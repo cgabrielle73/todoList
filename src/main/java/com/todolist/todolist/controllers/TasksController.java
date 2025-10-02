@@ -4,6 +4,8 @@ import com.todolist.todolist.entities.Tasks;
 import com.todolist.todolist.services.TasksService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/tasks")
 public class TasksController {
@@ -21,5 +23,10 @@ public class TasksController {
     @PatchMapping
     public Tasks updateStatus(@RequestBody Tasks tasks) {
         return tasksService.updateStatusOfTasks(tasks);
+    }
+
+    @GetMapping
+    public List<Tasks> getTasks(@RequestParam("id") Long[] idsTasks) {
+        return tasksService.getTasksByIds(idsTasks);
     }
 }

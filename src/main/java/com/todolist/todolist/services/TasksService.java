@@ -6,12 +6,13 @@ import com.todolist.todolist.repository.TasksRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class TasksService {
     private TasksRepository tasksRepository;
-    private StatusEnum statusEnum;
 
     public TasksService(TasksRepository tasksRepository) {
         this.tasksRepository = tasksRepository;
@@ -53,5 +54,10 @@ public class TasksService {
 
             return tasksRepository.save(taskToUpdate);
         }
+    }
+
+    public List<Tasks> getTasksByIds(Long[] ids) {
+        List<Long> idsList = Arrays.asList(ids);
+        return tasksRepository.findAllById(idsList);
     }
 }
